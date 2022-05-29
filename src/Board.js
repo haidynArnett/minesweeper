@@ -3,25 +3,26 @@ import React from 'react';
 class Board extends React.Component {
     constructor(props) {
         super(props);
-        const mines = this.GenerateMines();
+        const numMines = Math.ceil(0.15 * props.rows * props.cols);
         const board = this.GenerateBoard();
         this.state = {
             rows: props.rows,
             cols: props.cols,
-            numMines: props.numMines,
-            mines: mines,
-            board: board
+            numMines: numMines,
+            mines: (new Array(props.rows)).fill(new Array(props.cols)),
+            board: board,
+            firstClick: true
         }
     }
 
-    GenerateMines() {
+    GenerateMines(numMines) {
         let mines = new Array(this.props.rows);
         for (let i = 0; i < mines.length; i++)
         {
             mines[i] = new Array(this.props.cols).fill(0);
         }
         var mineCount = 0;
-        while (mineCount < this.props.numMines) {
+        while (mineCount < numMines) {
             let r = Math.floor(Math.random() * this.props.rows);
             let c = Math.floor(Math.random() * this.props.cols);
             if (mines[r][c] === 0) {
@@ -29,19 +30,7 @@ class Board extends React.Component {
                 mineCount++;
             }
         }
-        for (let r = 0; r < this.props.rows; r++) {
-            for (let c = 0; c < this.props.cols; c++) {
-                if (mines[r][c] === -1) {
-                    for (let i = r - 1; i < r + 2; i++) {
-                        for (let j = c - 1; j < c + 2; j++) {
-                            if (i >= 0 && i < this.props.rows && j >= 0 && j < this.props.cols && mines[i][j] !== -1) {
-                                mines[i][j]++;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        this.fillNums(mines);
         return mines;
     }
     GenerateBoard() {
@@ -57,14 +46,88 @@ class Board extends React.Component {
         return board
     }
 
-    handleClick(r, c) {
-        if (this.state.board[r][c] === 0) {
-            let newBoard = this.state.board;
-            newBoard[r][c] = 1;
-            this.setState({
-                board: newBoard
-            })
+    GenerateMinesOnClick(row, col) {
+        let mines = new Array(this.props.rows);
+        for (let i = 0; i < mines.length; i++)
+        {
+            mines[i] = new Array(this.props.cols).fill(0);
         }
+        var mineCount = 0;
+        while (mineCount < this.state.numMines) {
+            let r = Math.floor(Math.random() * this.props.rows);
+            let c = Math.floor(Math.random() * this.props.cols);
+            if (!this.isAdjacent(row, col, r, c) && mines[r][c] === 0) {
+                mines[r][c] = -1;
+                mineCount++;
+            }
+        }
+        this.fillNums(mines);
+        this.state.mines = mines;
+        this.setState({
+            firstClick: false,
+            mines: mines
+        });
+    }
+    isAdjacent(r1, c1, r2, c2) {
+        let length1 = Math.abs(r2 - r1) ** 2;
+        let length2 = Math.abs(c2 - c1) ** 2;
+        return Math.sqrt(length1 + length2) < 2;
+    }
+    fillNums(mines) {
+        for (let r = 0; r < this.props.rows; r++) {
+            for (let c = 0; c < this.props.cols; c++) {
+                if (mines[r][c] === -1) {
+                    for (let i = r - 1; i < r + 2; i++) {
+                        for (let j = c - 1; j < c + 2; j++) {
+                            if (i >= 0 && i < this.props.rows && j >= 0 && j < this.props.cols && mines[i][j] !== -1) {
+                                mines[i][j]++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    handleClick(r, c) {
+        let newBoard = this.state.board;
+        if (this.state.firstClick) {
+            this.GenerateMinesOnClick(r, c);
+        }
+        if (this.state.board[r][c] === 0) {
+            newBoard[r][c] = 1;
+        }
+        if (this.state.mines[r][c] === 0) {
+            this.uncoverAdjacentSquares(r, c, newBoard);
+        }
+        
+        this.setState({
+            board: newBoard
+        });
+    }
+    uncoverAdjacentSquares(r, c, newBoard) {
+        for (let i = r - 1; i < r + 2; i++) {
+            for (let j = c - 1; j < c + 2; j++) {
+                if (i >= 0 && i < this.state.rows && j >= 0 && j < this.state.cols && newBoard[i][j] === 0) {
+                    newBoard[i][j] = 1;
+                    if (!(i === r && j === c) && this.state.mines[i][j] === 0) {
+                        this.uncoverAdjacentSquares(i, j, newBoard);
+                    } 
+                }
+            }
+        }
+    }
+
+    handleRightClick(r, c) {
+        var newBoard = this.state.board;
+        if (this.state.board[r][c] === 0) {
+            newBoard[r][c] = 2;
+        } else if (this.state.board[r][c] === 2) {
+            newBoard[r][c] = 0;
+        }
+        this.setState({
+            board: newBoard
+        });
     }
 
     render() {
@@ -76,6 +139,7 @@ class Board extends React.Component {
                     rowNumber={index}
                     mines={this.state.mines[index]}
                     onClick={(r, c) => this.handleClick(r, c)}
+                    onContextMenu={(r, c) => this.handleRightClick(r, c)}
                 />
             )
         })
@@ -87,12 +151,17 @@ class Board extends React.Component {
 
 function BoardRow(props) {
     const row = props.row.map((status, index) => {
+        function rightClick(e) {
+            e.preventDefault();
+            props.onContextMenu(props.rowNumber, index);
+        }
         return (
             <Square
                 key={index}
                 status={status}
                 value={props.mines[index]}
                 onClick={() => props.onClick(props.rowNumber, index)}
+                onContextMenu={(e) => rightClick(e)}
             /> 
         )
     })
@@ -104,7 +173,7 @@ function BoardRow(props) {
 function Square(props) {
     if (props.status === 2) {
         return (
-            <button className="marked_square"></button>
+            <button className="marked_square" onContextMenu={props.onContextMenu}></button>
         ) 
     } else if (props.status === 1) {
         return (
@@ -112,7 +181,7 @@ function Square(props) {
         )
     } else {
         return (
-            <button onClick={props.onClick}className="covered_square"></button>
+            <button onClick={props.onClick} onContextMenu={props.onContextMenu} className="covered_square"></button>
         )
     }
 }
