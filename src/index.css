@@ -11,3 +11,52 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.covered_square {
+  width: 40px;
+  height: 40px;
+  background: grey;
+  border: 2px solid black;
+  margin: 2px;
+  text-align: center;
+  padding: 0;
+  float: center;
+}
+
+.uncovered_square {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border: 2px solid black;
+  margin: 2px;
+  text-align: center;
+  padding: 0;
+  float: center;
+}
+
+.marked_square {
+  width: 40px;
+  height: 40px;
+  background: red;
+  border: 2px solid black;
+  margin: 2px;
+  text-align: center;
+  padding: 0;
+  float: center;
+}
+
+.board-row {
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  /* display: grid; */
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  padding: 70px 0;
+  margin: auto;
+}
