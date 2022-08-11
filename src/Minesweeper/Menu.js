@@ -5,7 +5,8 @@ class Menu extends React.Component {
     
 
     render() {
-        if (this.props.gameState !== "play") {
+        console.log(this.props.gameState);
+        if (this.props.gameState !== 'play') {
             return (
                 <div className="menu">
                     <div className="backdrop"></div>
@@ -14,7 +15,7 @@ class Menu extends React.Component {
                     />
                     <Buttons
                         gameState={this.props.gameState}
-                        onClick={(state) => this.props.setGameState(state)}
+                        setGameState={(state) => this.props.setGameState(state)}
                     />
                 </div>
             );
@@ -25,7 +26,7 @@ class Menu extends React.Component {
 
 function Buttons (props) {
     return (
-        <button className="button" id="start-button" onClick={props.onClick('play')}>Start</button>
+        <button className="button" id="start-button" onClick={() => (props.setGameState('play'))}>Start</button>
     )
 }
 

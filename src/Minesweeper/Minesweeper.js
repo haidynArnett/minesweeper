@@ -11,7 +11,7 @@ class Minesweeper extends React.Component {
         };
     }
 
-    SetGameState(state) {
+    setGameState(state) {
         this.setState({
             gameState: state
         });
@@ -24,12 +24,12 @@ class Minesweeper extends React.Component {
                 <div className="title">Minesweeper</div>
                 <Menu
                     gameState={this.state.gameState}
-                    setGameState={(state) => this.SetGameState(state)}
+                    setGameState={(state) => this.setGameState(state)}
                 />
                 <Board
                     rows={20}
                     cols={25}
-                    setGameState={(state) => this.SetGameState(state)}
+                    setGameState={(state) => this.setGameState(state)}
                     gameState={this.state.gameState}
                 />
             </div>

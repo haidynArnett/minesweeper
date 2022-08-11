@@ -12,8 +12,7 @@ class Board extends React.Component {
             numMines: numMines,
             mines: (new Array(props.rows)).fill(new Array(props.cols)),
             board: board,
-            firstClick: true,
-            gameState: this.props.gameState
+            firstClick: true
         }
     }
 
@@ -138,10 +137,10 @@ class Board extends React.Component {
 
     // Makes the appropriate changes to the board when a square (r, c) is clicked
     handleClick(r, c) {
-        if (this.state.gameState === 'play') {
+        console.log('click');
+        if (this.props.gameState === 'play') {
             let newBoard = this.state.board;
             let newMines = this.state.mines;
-            let newGameState = this.state.gameState;
 
             // Generate mines if this is the start of the game
             if (this.state.firstClick) {
@@ -158,14 +157,12 @@ class Board extends React.Component {
                 } else if (newMines[r][c] === -1) {
 
                     // for ending the game if mine was clicked
-                    newGameState = 'lost';
                     this.props.setGameState('lost');
                     this.explodeMines(newBoard, newMines);
                 }
                 
                 // check for winning game state
                 if (this.gameWon(newBoard)) {
-                    newGameState = 'won';
                     this.props.setGameState('won');
                 }
             }
@@ -175,8 +172,7 @@ class Board extends React.Component {
 
             this.setState({
                 board: newBoard,
-                mines: newMines,
-                gameState: newGameState
+                mines: newMines
             });
         }
     }
@@ -211,6 +207,9 @@ class Board extends React.Component {
 
     // returns boolean of if winning game state has been reached
     gameWon(board) {
+        if (this.props.gameState === 'lost') {
+            return false;
+        }
         for (let r = 0; r < this.state.rows; r++) {
             for (let c = 0; c < this.state.cols; c++) {
                 if (board[r][c] === 0) {
@@ -223,9 +222,8 @@ class Board extends React.Component {
 
     // takes the appropriate action when a square is right clicked
     handleRightClick(r, c) {
-        if (this.state.gameState === 'play') {
+        if (this.props.gameState === 'play') {
             var newBoard = this.state.board;
-            var newGameState = this.state.gameState;
 
             // mark or unmark the square depending on it's current state
             if (this.state.board[r][c] === 0) {
@@ -234,12 +232,10 @@ class Board extends React.Component {
                 newBoard[r][c] = 0;
             }
             if (this.gameWon(newBoard)) {
-                newGameState = 'won';
                 this.props.setGameState('won');
             }
             this.setState({
-                board: newBoard,
-                gameState: newGameState
+                board: newBoard
             });
         }
     }
