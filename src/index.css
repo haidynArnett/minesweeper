@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  background-color: black;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -10,67 +11,4 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-.covered_square {
-  width: 40px;
-  height: 40px;
-  background: rgb(82, 185, 118);
-  border: 2px solid black;
-  margin: 2px;
-  text-align: center;
-  padding: 0;
-  float: center;
-}
-
-.uncovered_square {
-  width: 40px;
-  height: 40px;
-  background: rgb(0, 56, 0);
-  color: white;
-  border: 2px solid black;
-  margin: 2px;
-  text-align: center;
-  padding: 0;
-  float: center;
-}
-
-.marked_square {
-  width: 40px;
-  height: 40px;
-  background: red;
-  border: 2px solid black;
-  margin: 2px;
-  text-align: center;
-  padding: 0;
-  float: center;
-}
-
-.board-row {
-  text-align: center;
-  justify-content: center;
-  display: flex;
-  /* display: grid; */
-}
-
-.board {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-  margin: auto;
-}
-
-.title {
-  color: white;
-  padding: 20px;
-  text-align: center;
-  font-size: 25pt;
-}
-
-.game {
-  background-color: black;
-  padding: auto;
-  width: 100vw;
-  height: 100vh;
 }
