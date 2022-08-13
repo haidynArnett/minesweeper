@@ -26,20 +26,21 @@ class Menu extends React.Component {
 
 function Buttons (props) {
     return (
-        <button className="button" id="start-button" onClick={() => (props.setGameState('play'))}>Start</button>
+        <button className="button" id="new-game-button" onClick={() => (props.setGameState('play'))}>New Game</button>
     )
 }
 
 function GameStateMessage(props) {
     let message = '';
     if (props.gameState === 'won') {
-        message = 'You Win!'
+        return (
+            <h2 id="win-message" className="state-message">You Win!</h2>
+        )
     } else if (props.gameState === 'lost') {
-        message = 'You Lose!';
+        return (
+            <h2 id="lose-message" className="state-message">You Lose!</h2>
+        )
     }
-    return (
-        <h2 className="state-message">{message}</h2>
-    )
 }
 
 export default Menu;

@@ -159,6 +159,7 @@ class Board extends React.Component {
                     // for ending the game if mine was clicked
                     this.props.setGameState('lost');
                     this.explodeMines(newBoard, newMines);
+                    return;
                 }
                 
                 // check for winning game state
