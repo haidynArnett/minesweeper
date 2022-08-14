@@ -94,7 +94,7 @@ class Board extends React.Component {
     isAdjacent(r1, c1, r2, c2) {
         let length1 = Math.abs(r2 - r1) ** 2;
         let length2 = Math.abs(c2 - c1) ** 2;
-        return Math.sqrt(length1 + length2) < 2;
+        return Math.sqrt(length1 + length2) < 3;
     }
 
     // For checking if the area around (r, c) is saturated with mines 

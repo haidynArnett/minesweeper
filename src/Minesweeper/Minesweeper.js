@@ -7,7 +7,8 @@ class Minesweeper extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            gameState: 'menu'
+            gameState: 'menu',
+            difficulty: 'easy'
         };
     }
 
@@ -15,7 +16,14 @@ class Minesweeper extends React.Component {
         this.setState({
             gameState: state
         });
-        console.log(state);
+    }
+
+    setDifficulty(newDifficulty) {
+        let oldDifficulty = this.state.difficulty;
+        this.setState({
+            difficulty: newDifficulty
+        });
+        return oldDifficulty;
     }
 
     render() {
@@ -24,7 +32,9 @@ class Minesweeper extends React.Component {
                 <div className="title">Minesweeper</div>
                 <Menu
                     gameState={this.state.gameState}
+                    difficulty={this.state.difficulty}
                     setGameState={(state) => this.setGameState(state)}
+                    setDifficulty={(difficulty) => this.setDifficulty(difficulty)}
                 />
                 <Board
                     rows={20}

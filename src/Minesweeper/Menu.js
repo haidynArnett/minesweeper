@@ -15,7 +15,9 @@ class Menu extends React.Component {
                     />
                     <Buttons
                         gameState={this.props.gameState}
+                        difficulty={this.props.difficulty}
                         setGameState={(state) => this.props.setGameState(state)}
+                        setDifficulty={(difficulty) => this.props.setDifficulty(difficulty)}
                     />
                 </div>
             );
@@ -24,14 +26,30 @@ class Menu extends React.Component {
     }
 }
 
-function Buttons (props) {
+function Buttons(props) {
+
     return (
-        <button className="button" id="new-game-button" onClick={() => (props.setGameState('play'))}>New Game</button>
+        <div id="buttons">
+            <div id="difficulty-buttons">
+                <button
+                    className={`difficulty-button ${props.difficulty === 'easy' && 'selected-button'}`}
+                    id="easy-button"
+                    onClick={() => props.setDifficulty('easy')}>Easy</button>
+                <button
+                    className={`difficulty-button ${props.difficulty === 'medium' && 'selected-button'}`}
+                    id="medium-button"
+                    onClick={() => props.setDifficulty('medium')}>Medium</button>
+                <button
+                    className={`difficulty-button ${props.difficulty === 'hard' && 'selected-button'}`}
+                    id="hard-button"
+                    onClick={() => props.setDifficulty('hard')}>Hard</button>
+            </div>
+            <button className="button" id="new-game-button" onClick={() => (props.setGameState('play'))}>New Game</button>
+        </div>
     )
 }
 
 function GameStateMessage(props) {
-    let message = '';
     if (props.gameState === 'won') {
         return (
             <h2 id="win-message" className="state-message">You Win!</h2>
