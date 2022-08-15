@@ -30,7 +30,39 @@
     color: black;
 }
 
-#start-button {
+.difficulty-button {
+    width: 15%;
+    height: 10%;
+    padding: 0;
+    border: 0px;
+    position: absolute;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    font-size: 20pt;
+    color:rgb(255, 255, 255);
+    opacity: 0.4;
+}
+
+#easy-button {
+    left: 30%;
+    background-color:rgb(0, 56, 0);
+}
+
+#medium-button {
+    left: 50%;
+    background-color:rgb(230, 190, 46);
+}
+
+#hard-button {
+    left: 70%;
+    background-color: rgb(92, 0, 0);
+}
+
+.selected-button {
+    opacity: 1 !important;
+}
+
+#new-game-button {
     border: 2px black;
     padding: 0;
     position: absolute;
@@ -38,16 +70,30 @@
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    background-color: rgb(165, 0, 0);
-    font-size: 15pt;
+    background-color: rgb(0, 56, 0);
+    font-size: 25pt;
 }
 
 .state-message {
+    border: 2px black;
     position: absolute;
     top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
+    background-color: black;
+    width: 20%;
+    height: 20pt;
+    padding: 6% 0;
+    text-align: center;
+}
+
+#win-message {
+    background-color: rgb(0, 56, 0, 0.6);
+}
+
+#lose-message {
+    background-color: rgba(129, 0, 0, 0.6);
 }
 
 .menu {

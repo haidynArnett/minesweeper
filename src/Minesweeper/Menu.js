@@ -5,7 +5,8 @@ class Menu extends React.Component {
     
 
     render() {
-        if (this.props.gameState !== "play") {
+        console.log(this.props.gameState);
+        if (this.props.gameState !== 'play') {
             return (
                 <div className="menu">
                     <div className="backdrop"></div>
@@ -14,7 +15,9 @@ class Menu extends React.Component {
                     />
                     <Buttons
                         gameState={this.props.gameState}
-                        onClick={(state) => this.props.setGameState(state)}
+                        difficulty={this.props.difficulty}
+                        setGameState={(state) => this.props.setGameState(state)}
+                        setDifficulty={(difficulty) => this.props.setDifficulty(difficulty)}
                     />
                 </div>
             );
@@ -23,22 +26,39 @@ class Menu extends React.Component {
     }
 }
 
-function Buttons (props) {
+function Buttons(props) {
+
     return (
-        <button className="button" id="start-button" onClick={props.onClick('play')}>Start</button>
+        <div id="buttons">
+            <div id="difficulty-buttons">
+                <button
+                    className={`difficulty-button ${props.difficulty === 'easy' && 'selected-button'}`}
+                    id="easy-button"
+                    onClick={() => props.setDifficulty('easy')}>Easy</button>
+                <button
+                    className={`difficulty-button ${props.difficulty === 'medium' && 'selected-button'}`}
+                    id="medium-button"
+                    onClick={() => props.setDifficulty('medium')}>Medium</button>
+                <button
+                    className={`difficulty-button ${props.difficulty === 'hard' && 'selected-button'}`}
+                    id="hard-button"
+                    onClick={() => props.setDifficulty('hard')}>Hard</button>
+            </div>
+            <button className="button" id="new-game-button" onClick={() => (props.setGameState('play'))}>New Game</button>
+        </div>
     )
 }
 
 function GameStateMessage(props) {
-    let message = '';
     if (props.gameState === 'won') {
-        message = 'You Win!'
+        return (
+            <h2 id="win-message" className="state-message">You Win!</h2>
+        )
     } else if (props.gameState === 'lost') {
-        message = 'You Lose!';
+        return (
+            <h2 id="lose-message" className="state-message">You Lose!</h2>
+        )
     }
-    return (
-        <h2 className="state-message">{message}</h2>
-    )
 }
 
 export default Menu;
