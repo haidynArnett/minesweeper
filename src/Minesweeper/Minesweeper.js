@@ -6,35 +6,65 @@ import './Minesweeper.css';
 class Minesweeper extends React.Component {
     constructor(props) {
         super(props);
-        let numRows = 20;
-        let numCols = 25;
-        const numMines = Math.floor(0.15 * numRows * numCols);
-        const board = this.generateBoard(numRows, numCols);
 
+        let newRows = 10;
+        let newCols = 10;
+        let numMines = Math.floor(0.15 * newRows * newCols);
+        let newBoard = this.generateBoard(newRows, newCols);
         this.state = {
-            gameState: 'menu',
             difficulty: 'easy',
             numMines: numMines,
-            board: board,
-            mines: (new Array(numRows)).fill(new Array(numCols)),
-            rows: numRows,
-            cols: numCols,
-            firstClick: true
+            board: newBoard,
+            mines: (new Array(newRows)).fill(new Array(newCols)),
+            rows: newRows,
+            cols: newCols,
+            gameState: 'menu'
         };
     }
 
     setGameState(state) {
+        if (state === 'play') {
+            this.cleanBoard();
+        }
         this.setState({
             gameState: state
         });
     }
 
     setDifficulty(newDifficulty) {
-        let oldDifficulty = this.state.difficulty;
+        let newRows;
+        let newCols;
+        switch (newDifficulty) {
+            case 'easy': newRows = 10;
+                newCols = 10;
+                break;
+            case 'medium': newRows = 15;
+                newCols = 15;
+                break;
+            case 'hard': newRows = 20;
+                newCols = 20;
+                break;
+        }
+        let newNumMines = Math.floor(0.15 * newRows * newCols);
+        let newBoard = this.generateBoard(newRows, newCols);
         this.setState({
-            difficulty: newDifficulty
+            difficulty: newDifficulty,
+            numMines: newNumMines,
+            board: newBoard,
+            mines: (new Array(newRows)).fill(new Array(newCols)),
+            rows: newRows,
+            cols: newCols
         });
-        return oldDifficulty;
+    }
+
+    cleanBoard() {
+        let newNumMines = Math.floor(0.15 * this.state.rows * this.state.cols);
+        let newBoard = this.generateBoard(this.state.rows, this.state.cols);
+        this.setState({
+            numMines: newNumMines,
+            board: newBoard,
+            firstClick: true
+        })
     }
 
     // generates board of ints 
